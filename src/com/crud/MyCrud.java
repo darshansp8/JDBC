@@ -38,6 +38,17 @@ class MyConnection {
 		pst.execute();
 		display();
 	}
+	
+	void update(int id, String city) throws SQLException {
+		sql = "UPDATE EMP SET emp_city = ? WHERE emp_id = ?";
+		pst = con.prepareStatement(sql);
+		pst.setString(1, city);
+		pst.setInt(2, id);
+		pst.execute();
+		System.out.println("\nNew Records:\n");
+		display();
+		
+	}
 }
 public class MyCrud {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
@@ -48,6 +59,8 @@ public class MyCrud {
 		String name;
 		String city;
 		MyConnection mc = new MyConnection();
+		System.out.println("Initial Records\n");
+		mc.display();
 		do {
 			System.out.println("Please select one of the following operation:");
 			System.out.println("\n1. Insert a record.\n2. Update a record by id.\n3. Delete a record by id.\n4. Display the whole record");
@@ -63,6 +76,11 @@ public class MyCrud {
 				mc.insertValues(id, name, city);
 				break;
 			case 2:
+				System.out.println("Enter the id of the record you want to update:");
+				id = sc.nextInt();
+				System.out.println("\nEnter new city:");
+				city = sc.next();
+				mc.update(id, city);
 				break;
 			case 3:
 				break;
