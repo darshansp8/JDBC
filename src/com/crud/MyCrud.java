@@ -45,9 +45,17 @@ class MyConnection {
 		pst.setString(1, city);
 		pst.setInt(2, id);
 		pst.execute();
-		System.out.println("\nNew Records:\n");
+		System.out.println("\nUpdated Records\n");
 		display();
-		
+	}
+	
+	void delete(int id) throws SQLException {
+		sql = "DELETE FROM EMP where emp_id = ?";
+		pst = con.prepareStatement(sql);
+		pst.setInt(1, id);
+		pst.execute();
+		System.out.println("\nNew Records\n");
+		display();
 	}
 }
 public class MyCrud {
@@ -62,7 +70,7 @@ public class MyCrud {
 		System.out.println("Initial Records\n");
 		mc.display();
 		do {
-			System.out.println("Please select one of the following operation:");
+			System.out.println("\nPlease select one of the following operation:");
 			System.out.println("\n1. Insert a record.\n2. Update a record by id.\n3. Delete a record by id.\n4. Display the whole record");
 			operation = sc.nextInt();
 			switch(operation) {
@@ -83,6 +91,9 @@ public class MyCrud {
 				mc.update(id, city);
 				break;
 			case 3:
+				System.out.println("Enter the id to delete the record: ");
+				id = sc.nextInt();
+				mc.delete(id);
 				break;
 			
 			case 4:
@@ -93,6 +104,9 @@ public class MyCrud {
 			}
 			System.out.println("Press 1 if you wish to continue. To exit, press any key");
 			choice = sc.nextInt();
+			if(choice !=1) {
+				System.out.println("Thank You!!");
+			}
 		}while(choice == 1);
 	}
 }
