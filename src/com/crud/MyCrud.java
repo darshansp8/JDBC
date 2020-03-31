@@ -7,6 +7,7 @@ class MyConnection {
 	String sql = null;
 	ResultSet rs = null;
 	Statement st = null;
+	PreparedStatement pst = null;
 	Connection con = null;
 	MyConnection() throws SQLException, ClassNotFoundException{
 		Class.forName("oracle.jdbc.OracleDriver");
@@ -27,18 +28,39 @@ class MyConnection {
 		}
 		rs.close();
 	}
+	
+	void insertValues(int id, String name, String city) throws SQLException{
+		sql = "INSERT INTO EMP(emp_id, emp_name, emp_city) values(?,?,?)";
+		pst =con.prepareStatement(sql);
+		pst.setInt(1, id);
+		pst.setString(2, name);
+		pst.setString(3, city);
+		pst.execute();
+		display();
+	}
 }
 public class MyCrud {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		Scanner sc = new Scanner(System.in);
 		int choice;
 		int operation;
+		int id;
+		String name;
+		String city;
+		MyConnection mc = new MyConnection();
 		do {
 			System.out.println("Please select one of the following operation:");
 			System.out.println("\n1. Insert a record.\n2. Update a record by id.\n3. Delete a record by id.\n4. Display the whole record");
 			operation = sc.nextInt();
 			switch(operation) {
 			case 1:
+				System.out.println("\nEnter the id: ");
+				id = sc.nextInt();
+				System.out.println("\nEnter your name: ");
+				name = sc.next();
+				System.out.println("\nEnter your city: ");
+				city = sc.next();
+				mc.insertValues(id, name, city);
 				break;
 			case 2:
 				break;
@@ -46,7 +68,6 @@ public class MyCrud {
 				break;
 			
 			case 4:
-				MyConnection mc = new MyConnection();
 				mc.display();
 				break;
 			default:
